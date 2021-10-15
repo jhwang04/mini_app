@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mustang_mini_app/pre_event_analysis_screen.dart';
+import 'package:mustang_mini_app/home_screen.dart';
 
 void main() {
   runApp(AppState());
@@ -18,46 +20,7 @@ class _AppStateState extends State<AppState> {
           accentColor: Colors.greenAccent,
           inputDecorationTheme: InputDecorationTheme(
               fillColor: Colors.green, focusColor: Colors.green)),
-      home: Scaffold(
-        appBar: AppBar(
-            title: Text("Justin's Mini App"),
-            backgroundColor: Colors.green[900]),
-        bottomNavigationBar: BottomNavigationBar(items: [
-          BottomNavigationBarItem(
-              backgroundColor: Colors.black,
-              icon: Icon(Icons.show_chart),
-              label: "Pre-Event\nAnalysis"),
-          BottomNavigationBarItem(
-              backgroundColor: Colors.black,
-              icon: Icon(Icons.remove_red_eye),
-              label: "Scouting")
-        ], backgroundColor: Colors.green[900]),
-        body: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.all(15),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: "Event code",
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                  ),
-                ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {},
-              child: Text("Submit"),
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.green[700]),
-              ),
-            ),
-          ],
-        ),
-      ),
+      home: HomeScreen(),
     );
   }
 }
