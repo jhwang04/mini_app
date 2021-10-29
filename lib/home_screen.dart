@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mustang_mini_app/pre_event_analysis_screen.dart';
 import 'package:mustang_mini_app/scout_screen.dart';
+import 'package:mustang_mini_app/statistics_api_accessor.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
