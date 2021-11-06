@@ -3,9 +3,11 @@ import 'package:mustang_mini_app/statistics_api_accessor.dart';
 
 class PreEventAnalysisPage extends StatefulWidget {
   String titleText = "";
+  String sortBy = "opr";
 
-  PreEventAnalysisPage(String titleText) {
+  PreEventAnalysisPage(String titleText, String sortBy) {
     this.titleText = titleText;
+    this.sortBy = sortBy;
   }
 
   @override
@@ -32,12 +34,21 @@ class _PreEventAnalysisPageState extends State<PreEventAnalysisPage> {
     listItems.clear();
     List<Team> newListOfTeams = [];
     newListOfTeams = await api.getTeamsFromEvent(eventCode);
+    this.teams = newListOfTeams;
+    List<String> sortedTeamCodes = [];
+    List<Team> sortedTeams = [];
 
     Map<String, TeamPerformance> teamPerformances =
         await api.getTeamPerformanceFromEvent(eventCode);
 
+    sortedTeamCodes =
+        StatisticsAPIAccessor.sortBy(widget.sortBy, teamPerformances);
+    for (int i = 0; i < sortedTeamCodes.length; i++) {
+      sortedTeams.add(getTeamFromCode(sortedTeamCodes[i])!);
+    }
+
     setState(() {
-      this.teams = newListOfTeams;
+      this.teams = sortedTeams;
       this.performances = teamPerformances;
     });
   }
@@ -49,12 +60,33 @@ class _PreEventAnalysisPageState extends State<PreEventAnalysisPage> {
           title: Text(widget.titleText), backgroundColor: Colors.green[900]),
       body: ListView.builder(
         itemCount: teams.length,
-        itemBuilder: (BuildContext context, int index) => AnalysisListItem(
-            teams[index].teamNumber.toString(),
-            teams[index].schoolName,
-            performances[teams[index].key]!.opr),
+        itemBuilder: (BuildContext context, int index) {
+          if (widget.sortBy == "dpr") {
+            return AnalysisListItem(teams[index].teamNumber.toString(),
+                teams[index].schoolName, performances[teams[index].key]!.dpr);
+          } else if (widget.sortBy == "ccwm") {
+            return AnalysisListItem(teams[index].teamNumber.toString(),
+                teams[index].schoolName, performances[teams[index].key]!.ccwm);
+          } else {
+            return AnalysisListItem(teams[index].teamNumber.toString(),
+                teams[index].schoolName, performances[teams[index].key]!.opr);
+          }
+        },
       ),
     );
+  }
+
+/**
+ * Gets the Team object with the given code
+ * If this method returns null, the team code was not found.
+ */
+  Team? getTeamFromCode(String teamCode) {
+    for (int i = 0; i < teams.length; i++) {
+      if (teams[i].key == teamCode) {
+        return teams[i];
+      }
+    }
+    return null;
   }
 }
 

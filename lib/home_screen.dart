@@ -45,8 +45,17 @@ class HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class HomeScreenWidget extends StatelessWidget {
+class HomeScreenWidget extends StatefulWidget {
+  @override
+  State<HomeScreenWidget> createState() => _HomeScreenWidgetState();
+}
+
+class _HomeScreenWidgetState extends State<HomeScreenWidget> {
   String currentText = "";
+
+  String sortBy = "opr";
+
+  List<String> sortingOptions = ["opr", "dpr", "ccwm"];
 
   Widget build(BuildContext context) {
     return Column(
@@ -66,18 +75,39 @@ class HomeScreenWidget extends StatelessWidget {
             onChanged: (String value) => {this.currentText = value},
           ),
         ),
-        ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => PreEventAnalysisPage(currentText)),
-            );
-          },
-          child: Text("Submit"),
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.green[700]),
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          PreEventAnalysisPage(currentText, sortBy)),
+                );
+              },
+              child: Text("Submit"),
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all(Colors.green[700]),
+              ),
+            ),
+            SizedBox(
+              width: 15,
+            ),
+            DropdownButton(
+              value: sortBy,
+              onChanged: (value) {
+                setState(() {
+                  this.sortBy = value.toString();
+                });
+              },
+              items: sortingOptions.map((String value) {
+                return new DropdownMenuItem<String>(
+                    child: Text(value), value: "$value");
+              }).toList(),
+            ),
+          ],
         ),
       ],
     );

@@ -43,6 +43,43 @@ class StatisticsAPIAccessor {
     }
     return teams;
   }
+
+/**
+ * Sorts by the given OPR, DPR or CCWM.
+ * @param field Either "opr", "dpr" or "ccwm".
+ * @return A sorted list of teams, by the given param.
+ */
+  static List<String> sortBy(
+      String field, Map<String, TeamPerformance> inputTeams) {
+    List<String> sortedTeams = [];
+    List<String> unsortedTeams = [];
+
+    unsortedTeams.addAll(inputTeams.keys);
+
+    while (unsortedTeams.length > 0) {
+      double max = 0.0;
+      String maxTeam = "";
+      for (String team in unsortedTeams) {
+        if (inputTeams[team]!.opr > max && field == "opr") {
+          max = inputTeams[team]!.opr;
+        } else if (inputTeams[team]!.dpr > max && field == "dpr") {
+          max = inputTeams[team]!.dpr;
+        } else if (inputTeams[team]!.ccwm > max && field == "ccwm") {
+          max = inputTeams[team]!.ccwm;
+        } else {
+          continue;
+        }
+        maxTeam = team;
+      }
+      if (!unsortedTeams.remove(maxTeam)) {
+        print("something went wrong");
+        break;
+      }
+      sortedTeams.add(maxTeam);
+    }
+
+    return sortedTeams;
+  }
 }
 
 class Team {
