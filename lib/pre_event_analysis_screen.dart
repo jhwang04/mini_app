@@ -57,7 +57,16 @@ class _PreEventAnalysisPageState extends State<PreEventAnalysisPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text(widget.titleText), backgroundColor: Colors.green[900]),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(widget.titleText),
+            Text("Sort: " + widget.sortBy.toUpperCase(),
+                style: TextStyle(fontSize: 18)),
+          ],
+        ),
+        backgroundColor: Colors.green[900],
+      ),
       body: ListView.builder(
         itemCount: teams.length,
         itemBuilder: (BuildContext context, int index) {
@@ -113,12 +122,14 @@ class AnalysisListItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  name!,
-                  style: TextStyle(fontSize: 20),
+                  (name!.length < 30)
+                      ? name!
+                      : (name!.substring(0, 30) + "..."),
+                  style: TextStyle(fontSize: 18),
                 ),
                 Text(
                   teamKey!,
-                  style: TextStyle(fontSize: 18),
+                  style: TextStyle(fontSize: 15),
                 ),
               ],
             ),
